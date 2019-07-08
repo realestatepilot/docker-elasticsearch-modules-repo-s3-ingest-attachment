@@ -8,3 +8,4 @@ To build a new release on docker hub, set the tag with git to the current eleast
 git tag 7.2.0  {commitid}
 git push origin 7.2.0
 ```
+
