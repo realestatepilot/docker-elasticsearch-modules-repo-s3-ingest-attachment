@@ -1,5 +1,5 @@
-ARG 7.9.3
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+ARG 7.10.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.10.0
 
 RUN \
     bin/elasticsearch-plugin install --batch repository-s3 && \
