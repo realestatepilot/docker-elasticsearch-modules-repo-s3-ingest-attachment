@@ -1,0 +1,56 @@
+name: Check for new version of ElasticSearch
+on: 
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # Aktualisierung nur vor einem Werktag sinnvoll
+    - cron:  '20 14 * * 1-5'
+
+jobs:
+  check:
+    name: check current es version
+    runs-on: ubuntu-latest
+    steps:
+      - id: esversion
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          owner: elastic
+          repo: elasticsearch
+          excludes: prerelease, draft
+
+      - name: printoutput
+        run: |
+          echo ${{ steps.esversion.outputs.release }}
+
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - id: setverion
+        run: |
+          echo ${{ steps.esversion.outputs.release }} > version.txt
+          cat version.txt  
+          git status  
+          echo ::set-env name=ESMODIFIED::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
+      - name: pushversion
+        shell: bash
+        run: |
+          if [[ "$ESMODIFIED" == "true" ]]; then
+            git config --global user.name 'githubaction'
+            git config --global user.email 'tgruenert@users.noreply.github.com'
+            git add version.txt
+            git commit -am "automated bump version to ${{steps.esversion.outputs.release}}"
+            SHORTVERSION=$(echo ${{steps.esversion.outputs.release}} | cut -c 2-)
+
+            git tag $SHORTVERSION
+            git tag | tail -n 5
+            # git push
+          fi
+          exit 0
+
+      # - uses: docker/build-push-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      #     repository: pozetroninc/keydb-timeseries
+      #     dockerfile: timeseries.dockerfile
+      #     build_args: KEY_DB_VERSION=${{ steps.keydb.outputs.release }}, REDIS_TIME_SERIES_VERSION=${{ steps.timeseries.outputs.release }}
+      #     tags: latest, ${{ steps.keydb.outputs.release }}_${{ steps.timeseries.outputs.release }}
