@@ -4,7 +4,7 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Aktualisierung nur vor einem Werktag sinnvoll
-    - cron:  '59 17 * * 1-5'
+    - cron:  '30 18 * * 1-5'
 
 jobs:
   check:
@@ -29,9 +29,8 @@ jobs:
         run: |
           echo ${{ steps.esversion.outputs.release }} > version.txt
           cat version.txt  
-          git status  
-          echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
-          if [[ "${{steps.setversion.outputs.modified}}" == "true" ]]; then
+          # echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
+          if [[ $([ -z "`git status --porcelain`" ] && echo "false" || echo "true") == "true" ]]; then
             git config --global user.name 'githubaction'
             git config --global user.email 'tgruenert@users.noreply.github.com'
             git add version.txt
@@ -39,5 +38,6 @@ jobs:
             SHORTVERSION=$(echo ${{steps.esversion.outputs.release}} | cut -c 2-)
             git tag -a -m "automated version bump" $SHORTVERSION
             git push origin --atomic --follow-tags
+            echo "new version pushed"
           fi
           exit 0
