@@ -4,7 +4,7 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Aktualisierung nur vor einem Werktag sinnvoll
-    - cron:  '30 18 * * 1-5'
+    - cron:  '0 20 * * 1-5'
 
 jobs:
   check:
@@ -24,7 +24,9 @@ jobs:
 
       - name: Check out the repo
         uses: actions/checkout@v2
-
+        with:
+          # use deploy key to trigger further actions (push on tag)
+          ssh-key: "${{ secrets.COMMIT_KEY }}"
       - id: setversion
         run: |
           echo ${{ steps.esversion.outputs.release }} > version.txt
