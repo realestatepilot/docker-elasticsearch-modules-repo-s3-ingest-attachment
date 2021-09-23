@@ -1,5 +1,5 @@
-ARG 7.14.2
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.14.2
+ARG version=undefined
+FROM docker.elastic.co/elasticsearch/elasticsearch:$version
 
 RUN \
     bin/elasticsearch-plugin install --batch repository-s3 && \
