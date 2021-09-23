@@ -5,7 +5,9 @@ on:
     # * is a special character in YAML so you have to quote this string
     # Aktualisierung nur vor einem Werktag sinnvoll
     - cron:  '0 20 * * 1-5'
-
+  push:
+    tags: test
+    
 jobs:
   check:
     name: check current es version
