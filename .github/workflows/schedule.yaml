@@ -3,7 +3,7 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Aktualisierung nur vor einem Werktag sinnvoll
-    - cron:  '35 15 * * 1-5'
+    - cron:  '15 16 * * 1-5'
 
 jobs:
   check:
@@ -30,16 +30,12 @@ jobs:
           cat version.txt  
           git status  
           echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
-      - name: pushversion
-        shell: bash
-        run: |
           if [[ "${{steps.setversion.outputs.modified}}" == "true" ]]; then
             git config --global user.name 'githubaction'
             git config --global user.email 'tgruenert@users.noreply.github.com'
             git add version.txt
             git commit -am "automated bump version to ${{steps.esversion.outputs.release}}"
             SHORTVERSION=$(echo ${{steps.esversion.outputs.release}} | cut -c 2-)
-
             git tag $SHORTVERSION
             git push origin --tags
           fi
