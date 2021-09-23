@@ -3,7 +3,7 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Aktualisierung nur vor einem Werktag sinnvoll
-    - cron:  '15 16 * * 1-5'
+    - cron:  '34 16 * * 1-5'
 
 jobs:
   check:
