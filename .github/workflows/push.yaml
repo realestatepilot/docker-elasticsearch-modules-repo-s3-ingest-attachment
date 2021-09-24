@@ -26,6 +26,7 @@ jobs:
         with:
           context: .
           build-args: version=${{ env.GIT_TAG_NAME }}
+          tags: ${{github.repository}}:${{ env.GIT_TAG_NAME }}
           push: true
 
       - name: Release
@@ -33,18 +34,4 @@ jobs:
         with:
           name: Update elasticstack to ${{ env.GIT_TAG_NAME }}
 
-      - name: Send mail
-        uses: dawidd6/action-send-mail@v3.4.1
-        with:
-          server_address: ${{secrets.MAIL_HOST}}
-          server_port: 465
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
-          subject: Github Action build ElasticSearch ${{ env.GIT_TAG_NAME }}
-          to: ${{secrets.MAIL_TO}}
-          from: Github Action           
-          secure: true
-          body: "Build job of https://github.com/${{github.repository}}/releases completed successfully! New Version: ${{ env.GIT_TAG_NAME }}"
-          reply_to: ${{secrets.MAIL_REPLAY_TO}}
-          ignore_cert: true
           
