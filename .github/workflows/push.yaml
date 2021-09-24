@@ -26,7 +26,7 @@ jobs:
         with:
           context: .
           build-args: version=${{ env.GIT_TAG_NAME }}
-          push: false
+          push: true
 
       - name: Release
         uses: softprops/action-gh-release@v1
