@@ -37,7 +37,7 @@ jobs:
         with:
           context: .
           build-args: version=${{ env.GIT_TAG_NAME || '7.16.3'}}
-          tags: ${{github.repository}}:${{ env.GIT_TAG_NAME || '7.16.3' }}
+          tags: ${{ env.REGISTRY }}/${{github.repository}}:${{ env.GIT_TAG_NAME || '7.16.3' }}
           push: true
           
   release:
