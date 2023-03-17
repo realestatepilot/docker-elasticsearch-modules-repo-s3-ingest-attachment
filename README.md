@@ -5,15 +5,15 @@ Build OSS ElasticSearch image and additional modules
 * repository-s3
 * ingest-attachment
 
-into DockerHub to
-<https://hub.docker.com/r/evermind/docker-elasticsearch-modules-repo-s3-ingest-attachment>
+into Github Registry to
+<https://github.com/realestatepilot/docker-elasticsearch-modules-repo-s3-ingest-attachment/pkgs/container/docker-elasticsearch-modules-repo-s3-ingest-attachment>
 
 ## Automated release
 
 Github Action detects new versions at <https://github.com/elastic/elasticsearch/releases>.
 If new version detected:
 * build new Docker with current Version
-* push it to docker hub
+* push it ghcr.io
 * do release at github
 * mail information about new version
 
