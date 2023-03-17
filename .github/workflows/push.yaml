@@ -43,6 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ env.GIT_TAG_NAME}}
     steps:
+      - uses: olegtarasov/get-tag@v2.1
+        id: tagName
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
